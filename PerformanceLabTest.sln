@@ -7,6 +7,7 @@ Global
 		Task 1|Any CPU = Task 1|Any CPU
 		Task 2|Any CPU = Task 2|Any CPU
 		Task 3|Any CPU = Task 3|Any CPU
+		Task 4|Any CPU = Task 4|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FA573710-C2F4-4954-8214-A0E627E6D7DF}.Task 1|Any CPU.ActiveCfg = Task 1|Any CPU
@@ -15,5 +16,7 @@ Global
 		{FA573710-C2F4-4954-8214-A0E627E6D7DF}.Task 2|Any CPU.Build.0 = Task 2|Any CPU
 		{FA573710-C2F4-4954-8214-A0E627E6D7DF}.Task 3|Any CPU.ActiveCfg = Task 3|Any CPU
 		{FA573710-C2F4-4954-8214-A0E627E6D7DF}.Task 3|Any CPU.Build.0 = Task 3|Any CPU
+		{FA573710-C2F4-4954-8214-A0E627E6D7DF}.Task 4|Any CPU.ActiveCfg = Task 4|Any CPU
+		{FA573710-C2F4-4954-8214-A0E627E6D7DF}.Task 4|Any CPU.Build.0 = Task 4|Any CPU
 	EndGlobalSection
 EndGlobal

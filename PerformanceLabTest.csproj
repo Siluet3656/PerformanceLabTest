@@ -5,19 +5,34 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Configurations>Task 1;Task 2;Task 3</Configurations>
+        <Configurations>Task 1;Task 2;Task 3;Task 4</Configurations>
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
-	
-	<ItemGroup>
-    <Compile Remove="**/*.cs" />
-  </ItemGroup>
-  
+
+    <ItemGroup>
+        <Compile Remove="**/*.cs"/>
+        <Content Remove="**/*.txt"/>
+        <None Remove="**/*.txt"/>
+    </ItemGroup>
+
     <ItemGroup Condition="'$(Configuration)' == 'Task 1'">
-    <Compile Include="Task1/Task1.cs" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)' == 'Task 2'">
-    <Compile Include="Task2/Task2.cs" />
-  </ItemGroup>
+        <Compile Include="Task1/*"/>
+        <Content Include="Task1/*"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Task 2'">
+        <Compile Include="Task2/*"/>
+        <Content Include="Task2/*"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Task 3'">
+        <Compile Include="Task3/*"/>
+        <Content Include="Task3/*"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Task 4'">
+        <Compile Include="Task4/*"/>
+        <Content Include="Task4/*"/>
+    </ItemGroup>
 
 </Project>
