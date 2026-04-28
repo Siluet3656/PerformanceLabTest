@@ -12,6 +12,7 @@
     <ItemGroup>
         <Compile Remove="**/*.cs"/>
         <None Remove="**/*.txt"/>
+        <None Remove="**/*.json"/>
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)' == 'Task 1'">
@@ -27,6 +28,7 @@
     <ItemGroup Condition="'$(Configuration)' == 'Task 3'">
         <Compile Include="Task3/*.cs"/>
         <None Include="Task3/*.txt"/>
+        <None Include="Task3/*.json"/>
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)' == 'Task 4'">
