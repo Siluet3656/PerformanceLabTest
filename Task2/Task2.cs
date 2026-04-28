@@ -1,6 +1,6 @@
-﻿namespace PerformanceLabTest.Task1;
+﻿namespace PerformanceLabTest.Task2;
 
-public static class Task1
+public static class Task2
 {
     static void Main(string[] args)
     {

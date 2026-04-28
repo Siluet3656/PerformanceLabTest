@@ -5,6 +5,19 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;Task 1;Task 2</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
+	
+	<ItemGroup>
+    <Compile Remove="**/*.cs" />
+  </ItemGroup>
+  
+    <ItemGroup Condition="'$(Configuration)' == 'Task 1'">
+    <Compile Include="Task1/Task1.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Task 2'">
+    <Compile Include="Task2/Task2.cs" />
+  </ItemGroup>
 
 </Project>
