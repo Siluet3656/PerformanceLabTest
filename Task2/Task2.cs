@@ -106,7 +106,7 @@ public static class Task2
         double b = ellipse.RadiusY;
         double dx = point.X - ellipse.CenterX;
         double dy = point.Y - ellipse.CenterY;
-        const double eps = 1e-1;
+        const double eps = 1e-6;
 
         if (a == 0.0 && b == 0.0)
         {
