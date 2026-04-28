@@ -24,10 +24,19 @@ public static class Task2
 
             string[] numbers = ellipseContent.Split([' ', '\n', '\r'], StringSplitOptions.RemoveEmptyEntries);
 
-            ellipse = new Ellipse(double.Parse(numbers[0]),
-                double.Parse(numbers[1]),
-                double.Parse(numbers[2]),
-                double.Parse(numbers[3]));
+            if (!double.TryParse(numbers[0], out double cx) ||
+                !double.TryParse(numbers[1], out double cy) ||
+                !double.TryParse(numbers[2], out double rx) ||
+                !double.TryParse(numbers[3], out double ry))
+            {
+                writer.WriteLine("Invalid number format in ellipse file.");
+                return;
+            }
+
+            rx = Math.Abs(rx);
+            ry = Math.Abs(ry);
+
+            ellipse = new Ellipse(cx, cy, rx, ry);
         }
         catch (Exception exception)
         {
@@ -52,7 +61,14 @@ public static class Task2
                     continue;
                 }
 
-                points.Add(new PointDouble(double.Parse(numbers[0]), double.Parse(numbers[1])));
+                if (!double.TryParse(numbers[0], out double x) ||
+                    !double.TryParse(numbers[1], out double y))
+                {
+                    writer.WriteLine("Invalid number in points file.");
+                    continue;
+                }
+
+                points.Add(new PointDouble(x, y));
             }
         }
         catch (Exception exception)
@@ -63,7 +79,7 @@ public static class Task2
 
         foreach (PointDouble point in points)
         {
-            int result =CheckPoint(ellipse, point);
+            int result = CheckPoint(ellipse, point);
             writer.WriteLine(result);
         }
 
@@ -72,51 +88,63 @@ public static class Task2
 
     private struct Ellipse(double xCenter, double yCenter, double xCoordinate, double yCoordinate)
     {
-        public double XCenter = xCenter;
-        public double YCenter = yCenter;
-        public double XCoordinate = xCoordinate;
-        public double YCoordinate = yCoordinate;
+        public readonly double CenterX = xCenter;
+        public readonly double CenterY = yCenter;
+        public readonly double RadiusX = xCoordinate;
+        public readonly double RadiusY = yCoordinate;
     }
 
     private struct PointDouble(double x, double y)
     {
-        public double X = x;
-        public double Y = y;
+        public readonly double X = x;
+        public readonly double Y = y;
     }
 
     private static int CheckPoint(Ellipse ellipse, PointDouble point)
     {
-        double a = Math.Abs(ellipse.XCoordinate - ellipse.XCenter);
-        double b = Math.Abs(ellipse.YCoordinate - ellipse.YCenter);
-        double dx = point.X - ellipse.XCenter;
-        double dy = point.Y - ellipse.YCenter;
+        double a = ellipse.RadiusX;
+        double b = ellipse.RadiusY;
+        double dx = point.X - ellipse.CenterX;
+        double dy = point.Y - ellipse.CenterY;
+        const double eps = 1e-1;
 
         if (a == 0.0 && b == 0.0)
         {
-            if (dx == 0.0 && dy == 0.0) return 0;
-            return 2;
+            double dist = Math.Sqrt(dx * dx + dy * dy);
+            return dist <= eps ? 0 : 2;
         }
+
         if (a == 0.0)
         {
-            if (dx != 0.0) return 2;
+            double tol = eps * Math.Max(b, 1.0);
+            if (Math.Abs(dx) > tol)
+                return 2;
             double absDy = Math.Abs(dy);
-            if (absDy < b) return 1;
-            if (absDy == b) return 0;
-            return 2;
+            if (Math.Abs(absDy - b) <= tol)
+                return 0;
+            else if (absDy < b)
+                return 1;
+            else
+                return 2;
         }
+
         if (b == 0.0)
         {
-            if (dy != 0.0) return 2;
+            double tol = eps * Math.Max(a, 1.0);
+            if (Math.Abs(dy) > tol)
+                return 2;
             double absDx = Math.Abs(dx);
-            if (absDx < a) return 1;
-            if (absDx == a) return 0;
-            return 2;
+            if (Math.Abs(absDx - a) <= tol)
+                return 0;
+            else if (absDx < a)
+                return 1;
+            else
+                return 2;
         }
-        
+
         double left = dx * dx * b * b + dy * dy * a * a;
         double right = a * a * b * b;
         double diff = left - right;
-        const double eps = 1e-12;
         double tolerance = eps * right;
 
         if (Math.Abs(diff) <= tolerance)
