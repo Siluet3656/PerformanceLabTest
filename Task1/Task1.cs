@@ -18,11 +18,12 @@ public static class Task1
             !int.TryParse(args[2], out int n2) || !int.TryParse(args[3], out int m2))
         {
             writer.WriteLine("All arguments must be valid integers..");
+            writer.WriteLine("Usage: PerformanceLabTest.exe n1 m1 n2 m2");
             writer.Flush();
             return;
         }
 
-        if (n1 > 0 && m1 > 0 && n2 > 0 && m2 > 0)
+        if (n1 <= 0 || m1 <= 0 || n2 <= 0 || m2 <= 0)
         {
             writer.WriteLine("All arguments MUST be positive..");
             writer.WriteLine("Usage: PerformanceLabTest.exe n1 m1 n2 m2");
@@ -43,39 +44,15 @@ public static class Task1
     private static string CalculatePath(int n, int m)
     {
         string result = "";
-        
-        int c = 0;
-        bool isEnd = false;
-        while (isEnd == false)
+        int current = 1;
+        do
         {
-            for (int i = 0; i < m; i++)
-            {
-                int cycleIndex = CalculateCycleIndex(c, n);
-
-                if (i == 0)
-                {
-                    result += (cycleIndex + 1).ToString();
-                }
-
-                if (i == m - 1)
-                {
-                    if (cycleIndex + 1 == 1)
-                    {
-                        isEnd = true;
-                    }
-
-                    break;
-                }
-
-                c++;
-            }
-        }
+            result += current;
+            int next = (current + m - 1) % n;
+            if (next == 0) next = n;
+            current = next;
+        } while (current != 1);
 
         return result;
-    }
-
-    private static int CalculateCycleIndex(int index, int size)
-    {
-        return index % size;
     }
 }
