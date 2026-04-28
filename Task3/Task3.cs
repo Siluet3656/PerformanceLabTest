@@ -3,7 +3,7 @@ using System.Text.Json.Nodes;
 
 namespace PerformanceLabTest.Task3;
 
-public static class Task2
+public static class Task3
 {
     static void Main(string[] args)
     {
@@ -55,7 +55,7 @@ public static class Task2
         }
         catch (Exception exception)
         {
-            Console.Error.WriteLine($"Error reading ellipse file: {exception.Message}");
+            Console.Error.WriteLine($"Error reading values file: {exception.Message}");
             return;
         }
 
@@ -76,7 +76,7 @@ public static class Task2
         }
         catch (Exception exception)
         {
-            Console.Error.WriteLine($"Error reading ellipse file: {exception.Message}");
+            Console.Error.WriteLine($"Error reading tests file: {exception.Message}");
             return;
         }
 
@@ -110,39 +110,42 @@ public static class Task2
         }
         catch (Exception exception)
         {
-            Console.Error.WriteLine($"Error reading ellipse file: {exception.Message}");
+            Console.Error.WriteLine($"Error in report file: {exception.Message}");
             return;
         }
 
         writer.Flush();
     }
 
-    static void FillValues(JsonNode? node, Dictionary<int, JsonNode?> lookup)
+    private static void FillValues(JsonNode? node, Dictionary<int, JsonNode?> lookup)
     {
         if (node == null) return;
 
-        if (node is JsonObject obj)
+        switch (node)
         {
-            if (obj.TryGetPropertyValue("id", out JsonNode? idNode) &&
-                idNode != null &&
-                idNode.GetValue<int>() is int id &&
-                lookup.TryGetValue(id, out JsonNode? newValue))
-            {
-                obj["value"] = newValue?.DeepClone();
-            }
+            case JsonObject obj:
+                if (obj.TryGetPropertyValue("id", out var idNode)
+                    && idNode != null
+                    && lookup.TryGetValue(idNode.GetValue<int>(), out var newValue))
+                {
+                    obj["value"] = newValue?.DeepClone();
+                }
 
-            foreach (var property in obj)
-            {
-                if (property.Value is JsonObject || property.Value is JsonArray)
-                    FillValues(property.Value, lookup);
-            }
-        }
-        else if (node is JsonArray arr)
-        {
-            foreach (JsonNode? item in arr)
-            {
-                FillValues(item, lookup);
-            }
+                foreach (var property in obj)
+                {
+                    if (property.Value is JsonObject or JsonArray)
+                        FillValues(property.Value, lookup);
+                }
+
+                break;
+
+            case JsonArray arr:
+                foreach (JsonNode? item in arr)
+                {
+                    FillValues(item, lookup);
+                }
+
+                break;
         }
     }
 }
